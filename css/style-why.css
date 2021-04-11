@@ -1,0 +1,26 @@
+#content {
+  margin-top: 60px;
+}
+
+#content a {
+  color: #407EE3;
+  text-decoration: none;
+}
+
+#content .why-box {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 350px;
+  height: 200px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 550px) {
+    #content .why-box {
+        display: block;
+        text-align: center;
+        margin: 20px 20px 0 20px;
+        height: auto;
+    }
+}

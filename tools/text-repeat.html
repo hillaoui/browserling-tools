@@ -1,0 +1,247 @@
+<html>
+    
+<!-- Mirrored from www.browserling.com/tools/text-repeat by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 11 Apr 2021 18:05:48 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Repeat Text - Repeat String - Online - Browserling Web Developer Tools</title>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        var undoStack = [];
+
+        function mkUndo (toolName) {
+            var undoSelector = '#' + toolName + '-submit-undo';
+            var textSelector = '#' + toolName + '-text';
+
+            $(undoSelector).click(function (ev) {
+                ev.preventDefault();
+
+                var last = undoStack.pop();
+                $(textSelector).val(last);
+
+                if (undoStack.length == 0) {
+                    $(undoSelector).hide();
+                }
+            });
+        }
+
+        function mkTool (toolName, computeFn, opts) {
+            opts = opts || {};
+
+            var submitSelector = '#' + toolName + '-submit';
+            var undoSelector = '#' + toolName + '-submit-undo';
+            var textSelector = '#' + toolName + '-text';
+
+            $(submitSelector).click(function () {
+                var text = $(textSelector).val();
+                if (!opts.allowEmptyText) {
+                    if (!text.length) return;
+                }
+
+                $('#action-error').hide();
+
+                try {
+                    if (opts.asyncResultFn) {
+                        computeFn(text, opts.asyncResultFn);
+                    }
+                    else {
+                        var result = computeFn(text, opts.asyncResultFn);
+                        $(textSelector).val(result);
+                    }
+                }
+                catch (err) {
+                    if (opts.exceptionFn) opts.exceptionFn(err);
+                    return;
+                }
+
+                undoStack.push(text);
+
+                $(undoSelector).show();
+            });
+
+            mkUndo(toolName);
+        }
+
+        $(function () {
+            // make copy to clipboard work
+            //
+            $('#copy-to-clipboard').click(function (ev) {
+                ev.preventDefault();
+                $('#tool-implementation textarea').select();
+                document.execCommand('copy');
+            });
+
+            mkTool('text-repeat', function (text) {
+                var count = $('#text-repeat-count').val();
+                var ret = '';
+                for (var i = 1; i <= count; i++) {
+                    ret += text;
+                }
+                return ret;
+            });
+        });
+    </script>
+    <style>
+        #logo {
+          text-align: center;
+        }
+        #browser-window {
+          margin: 0 5%;
+          margin-bottom: 80px;
+        }
+
+        #browser-window-top {
+          border: 2px solid #a4c7f0;
+          border-bottom: 0px;
+          height: 30px;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          background-color: white;
+        }
+
+        #browser-window-circles {
+          margin-top: 3px;
+          margin-left: 20px;
+        }
+
+        #browser-window-circles .circle {
+          display: inline-block;
+          border: 1px solid #a4c7f0;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+        }
+
+        #browser-window-body {
+          border: 2px solid #a4c7f0;
+          border-bottom-left-radius: 4px;
+          border-bottom-right-radius: 4px;
+          text-align: center;
+          background-color: white;
+        }
+
+        #browser-window-content {
+          margin-top: 35px;  
+          font-family: 'Open Sans', sans-serif;
+        }
+
+        #browser-window-body h1 {
+          margin-top: 40px;
+          font-size: 32px;
+          color: #4272AB;
+          font-family: 'Raleway', Ubuntu, Helvetica, sans-serif;
+        }
+
+        #tool-implementation {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #tool-implementation a {
+            color: #6D92BE;
+        }
+
+        #inverse-tool a {
+            color: #6D92BE;
+        }
+
+        #more-tools a {
+            color: #6D92BE;
+        }
+
+        #tool-implementation .field {
+            margin: 0 auto;
+            text-align: center;
+            width: 90%;
+        }
+
+        #tool-implementation .field .undo {
+            display: none;
+            font-size: 14px;
+        }
+
+        #tool-implementation .field textarea {
+            width: 100%;
+            max-width: 450px;
+            height: 200px;
+        }
+
+        #tool-implementation .field #action-error {
+            color: red;
+        }
+
+        #tool-implementation .field #action-success {
+            color: green;
+        }
+
+        #tool-implementation #copy-to-clipboard img {
+            top: 3px;
+            position: relative;
+        }
+
+        #tools .tool-description {
+            font-size: 14px;
+            color: #333332;
+        }
+
+        #tool-description {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="logo"><img src="data:image/png;base64,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"></div>
+        <div id="browser-window">
+            <div id="browser-window-top">
+                <div id="browser-window-circles">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div id="browser-window-body">
+                <h1>String Repeater</h1>
+                <h2>web developer and programmer tools</h2>
+                <div id="browser-window-content">
+                    <div id="tool-description">World's simplest string and text repeater. Just paste your text in the form below, press Repeat button, and you get repeated data. Press button, get repeated text. No ads, nonsense or garbage.</div>
+                    <div id="tool-fb-like">
+                        <div class="fb-like" data-href="https://www.facebook.com/browserling/" data-layout="button_count" data-action="like" data-show-faces="true"></div>
+                    </div>
+                    <div id="tool-implementation">
+                        <div id="tool-text-repeat">
+                            <div class="field">
+                                <textarea id="text-repeat-text"></textarea>
+                            </div>
+                            <div class="field">
+                                <div id="action-error"></div>
+                            </div>
+                            <div class="field">
+                                <div>
+                                    How many times? <input type="text" size="5" value="10" id="text-repeat-count">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <input type="submit" value="Repeat!" id="text-repeat-submit"> <span id="copy-to-clipboard"><a href="#"><img src="../images/copy-to-clipboard.png" title="Copy to clipboard"></a></span> <span id="text-repeat-submit-undo" class="undo"><a href="#">(undo)</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="fb-root"></div>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-19793659-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-19793659-1');
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0" nonce="S4KkNAKa"></script>
+    </body>
+
+<!-- Mirrored from www.browserling.com/tools/text-repeat by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 11 Apr 2021 18:05:48 GMT -->
+</html>
